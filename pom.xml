@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.1.11</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>com.gerenciador.tarefas</groupId>
+	<artifactId>gerenciador-tarefas</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>gerenciador-tarefas</name>
+	<description>Aplicativo simples para gerenciar tarefas</description>
+	<properties>
+		<java.version>17</java.version>
+	</properties>
+	<dependencies>
+
+		<!--
+		Lombok [FERRAMENTAS DE DESENVOLVIMENTO]
+		Biblioteca de anotação Java que ajuda a reduzir o código padrão.
+		-->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+		<!--
+		Spring Boot DevTools [FERRAMENTAS DE DESENVOLVEDOR]
+		Fornece reinicializações rápidas de aplicativos, LiveReload e configurações para uma experiência de
+		desenvolvimento aprimorada.
+		-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
+		</dependency>
+
+		<!--
+		Starter Test
+		Starter para testar aplicativos Spring Boot com bibliotecas incluindo JUnit Jupiter, Hamcrest e Mockito. Licença, Apache 2.0.
+		-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!--
+		Validation [E/S]
+		Validação de Bean com validador Hibernate.
+		-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+
+		<!--
+		Spring Web [WEB]
+		Crie aplicativos da web, incluindo RESTful, usando Spring MVC. Usa Apache Tomcat como contêiner incorporado
+		padrão.
+		-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<!--
+		Rest Repositories [WEB]
+		Expondo repositórios Spring Data sobre REST via Spring Data REST.
+		-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-rest</artifactId>
+		</dependency>
+
+		<!--
+		Starter Test
+		Starter para testar aplicativos Spring Boot com bibliotecas incluindo JUnit Jupiter, Hamcrest e Mockito. Licença, Apache 2.0.
+		-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+
+		<!--
+		PostgreSQL Driver [SQL]
+		Um driver JDBC (Java Database Connectivity) e R2DBC (Reactive Relational Database Connectivity) que permite que
+		programas Java se conectem a um banco de dados PostgreSQL usando código Java padrão independente de banco de
+		dados.
+		-->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!--
+		Spring Security  [SEGURANÇA]
+		Estrutura de autenticação e controle de acesso altamente personalizável para aplicativos Spring.
+		-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
+		<!--
+		JSON Web Token
+		-->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.9.1</version>
+		</dependency>
+
+		<!--
+		Segurança
+		-->
+		<dependency>
+			<groupId>jakarta.xml.bind</groupId>
+			<artifactId>jakarta.xml.bind-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>2.3.1</version>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<image>
+						<builder>paketobuildpacks/builder-jammy-base:latest</builder>
+					</image>
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
