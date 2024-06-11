@@ -2,7 +2,7 @@ package com.gerenciador.tarefas.service;
 
 import com.gerenciador.tarefas.entity.Tarefa;
 import com.gerenciador.tarefas.excecoes.NaoPermitirExcluirException;
-import com.gerenciador.tarefas.excecoes.NaoPermitidoAlterarStatusException;
+import com.gerenciador.tarefas.excecoes.NaoPermitoAlterarStatusException;
 import com.gerenciador.tarefas.excecoes.TarefaExistenteException;
 import com.gerenciador.tarefas.repository.GerenciadorTarefasRepository;
 import com.gerenciador.tarefas.request.AtualizarTarefaRequest;
@@ -14,83 +14,91 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @Transactional
 public class GerenciadorTarefasService {
 
-  @Autowired
-  private GerenciadorTarefasRepository gerenciadorTarefasRepository;
+    @Autowired
+    private GerenciadorTarefasRepository gerenciadorTarefasRepository;
 
-  @Autowired
-  private UsuarioService usuarioService;
+    @Autowired
+    private UsuarioService usuarioService;
 
-  public Tarefa salvarTarefa(CadastrarTarefaRequest request) {
+    public Tarefa salvarTarefa(CadastrarTarefaRequest request) {
 
-    Tarefa tarefaValidacao = gerenciadorTarefasRepository.findByTituloOrDescricao(request.getTitulo(),
-        request.getDescricao());
+        Tarefa tarefaValidacao = gerenciadorTarefasRepository.findByTituloOrDescricao(
+            request.getTitulo(),
+            request.getDescricao()
+        );
 
-    if (tarefaValidacao != null) {
-      throw new TarefaExistenteException("Já existe uma tarefa com mesmo título ou descrição");
+        if (tarefaValidacao != null) {
+            throw new TarefaExistenteException("Já existe uma tarefa com o mesmo titulo ou descrição");
+        }
+
+        Tarefa tarefa = Tarefa.builder()
+            .quantidadeHorasEstimadas(request.getQuantidadeHorasEstimadas())
+            .status(TarefaStatusEnum.CRIADA)
+            .titulo(request.getTitulo())
+            .descricao(request.getDescricao())
+            .criador(usuarioService.obterUsuarioId(request.getCriadorId()).get())
+            .build();
+
+        return this.gerenciadorTarefasRepository.save(tarefa);
     }
 
-    Tarefa tarefa = Tarefa.builder()
-        .quantidadeHorasEstimadas(request.getQuantidadeHorasEstimadas())
-        .status(TarefaStatusEnum.CRIADA)
-        .titulo(request.getTitulo())
-        .descricao(request.getDescricao())
-        .criador(usuarioService.obterUsuarioId(request.getCriadorId()).get())
-        .build();
-
-    return this.gerenciadorTarefasRepository.save(tarefa);
-  }
-
-  public Page<Tarefa> obtemTarefasPorTitulo(String titulo, Pageable pageable) {
-    return this.gerenciadorTarefasRepository.findByTituloContainingOrderByDataAtualizacaoDesc(titulo, pageable);
-  }
-
-  public Page<Tarefa> obtemTodasTarefas(Pageable pageable) {
-    return this.gerenciadorTarefasRepository.findAllByOrderByDataAtualizacaoDesc(pageable);
-  }
-
-  public Tarefa atualizarTarefa(Long id, AtualizarTarefaRequest request) {
-
-    Tarefa tarefa = this.gerenciadorTarefasRepository.findById(id).get();
-
-    if (tarefa.getStatus().equals(TarefaStatusEnum.FINALIZADA)) {
-      throw new NaoPermitidoAlterarStatusException("Não é permitido mover tarefa que está FINALIZADA");
+    public Page<Tarefa> obtemTarefasPorTitulo(String titulo, Pageable pegeable) {
+        return this.gerenciadorTarefasRepository.findByTituloContainingOrderByDataAtualizacaoDesc(titulo, pegeable);
     }
 
-    if (tarefa.getStatus().equals(TarefaStatusEnum.CRIADA) && request.getStatus().equals(TarefaStatusEnum.FINALIZADA)) {
-      throw new NaoPermitidoAlterarStatusException(
-          "Não permitido mover a tarefa para FINALIZADA se estiver com status de CRIADA");
+    public Page<Tarefa> obtemTodasTarefas(Pageable pegeable) {
+
+        return this.gerenciadorTarefasRepository.findAllByOrderByDataAtualizacaoDesc(pegeable);
     }
 
-    if (tarefa.getStatus().equals(TarefaStatusEnum.BLOQUEADA)
-        && request.getStatus().equals(TarefaStatusEnum.FINALIZADA)) {
-      throw new NaoPermitidoAlterarStatusException(
-          "Não permitido mover a tarefa para FINALIZADA se estiver com status de BLOQUEADA");
+    public Tarefa atualizarTarefa(Long id, AtualizarTarefaRequest request) {
+
+        Tarefa tarefa = this.gerenciadorTarefasRepository.findById(id).get();
+
+        if (tarefa.getStatus().equals(TarefaStatusEnum.FINALIZADA)) {
+            throw new NaoPermitoAlterarStatusException(
+                "Não permitido mover tarefa que está FINALIZADA"
+            );
+        }
+
+        if (tarefa.getStatus().equals(TarefaStatusEnum.CRIADA) && request.getStatus().equals(TarefaStatusEnum.FINALIZADA)) {
+            throw new NaoPermitoAlterarStatusException(
+                "Não permitido mover a tarefa para FINALIZADA se a mesma estiver com status de CRIADA"
+            );
+        }
+
+        if (tarefa.getStatus().equals(TarefaStatusEnum.BLOQUEADA) && request.getStatus().equals(TarefaStatusEnum.FINALIZADA)) {
+            throw new NaoPermitoAlterarStatusException(
+                "Não permitido mover a tarefa para FINALIZADA se a mesma estiver com status de BLOQUEADA"
+            );
+        }
+
+        tarefa.setQuantidadeHorasEstimadas(request.getQuantidadeHorasEstimadas());
+        tarefa.setStatus(request.getStatus());
+        tarefa.setTitulo(request.getTitulo());
+        tarefa.setDescricao(request.getDescricao());
+        tarefa.setResponsavel(usuarioService.obterUsuarioId(request.getResponsavelId()).get());
+        tarefa.setQuantidadeHorasRealizada(request.getQuantidadeHorasRealizada());
+
+        this.gerenciadorTarefasRepository.save(tarefa);
+
+        return tarefa;
     }
 
-    tarefa.setQuantidadeHorasEstimadas(request.getQuantidadeHorasEstimadas());
-    tarefa.setStatus(request.getStatus());
-    tarefa.setTitulo(request.getTitulo());
-    tarefa.setDescricao(request.getDescricao());
-    tarefa.setResponsavel(usuarioService.obterUsuarioId(request.getResponsavelId()).get());
-    tarefa.setQuantidadeHorasRealizada(request.getQuantidadeHorasRealizada());
+    public void excluirTarefa(Long id) {
 
-    this.gerenciadorTarefasRepository.save(tarefa);
+        Tarefa tarefa = this.gerenciadorTarefasRepository.findById(id).get();
 
-    return tarefa;
-  }
+        if (!TarefaStatusEnum.CRIADA.equals(tarefa.getStatus())) {
+            throw new NaoPermitirExcluirException();
+        }
 
-  public void excluirTarefa(Long id) {
-
-    Tarefa tarefa = this.gerenciadorTarefasRepository.findById(id).get();
-
-    if (!TarefaStatusEnum.CRIADA.equals(tarefa.getStatus())) {
-      throw new NaoPermitirExcluirException();
+        this.gerenciadorTarefasRepository.deleteById(id);
     }
-
-    this.gerenciadorTarefasRepository.deleteById(id);
-  }
 }

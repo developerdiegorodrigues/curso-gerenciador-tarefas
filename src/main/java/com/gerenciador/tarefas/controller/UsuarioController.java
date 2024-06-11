@@ -9,33 +9,33 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/usuarios") // Notação que determina a raiz do controler
+@RequestMapping("/usuarios")
 public class UsuarioController {
 
-  @Autowired
-  private UsuarioService usuarioService;
+    @Autowired
+    private UsuarioService usuarioService;
 
-  @PostMapping
-  public ResponseEntity<String> salvarUsuario(@RequestBody Usuario usuario) {
+    @PostMapping
+    public ResponseEntity<String> salvarUsuario(@RequestBody Usuario usuario) {
 
-    Usuario usuarioSalvo = usuarioService.salvarUsuario(usuario);
-    return new ResponseEntity<>("Novo usuário criado " + usuarioSalvo.getUsername(), HttpStatus.CREATED);
-  }
+        Usuario usuarioSalvo  = usuarioService.salvarUsuario(usuario);
+        return new ResponseEntity<>("Novo usuário criado "+ usuarioSalvo.getUsername(), HttpStatus.CREATED);
+    }
 
-  @PutMapping
-  public ResponseEntity<String> atualizarUsuario(@RequestBody Usuario usuario) {
+    @PutMapping
+    public ResponseEntity<String> atualizarUsuario(@RequestBody Usuario usuario){
 
-    Usuario usuarioSalvo = usuarioService.salvarUsuario(usuario);
-    return new ResponseEntity<>("Usuário atualizado " + usuarioSalvo.getUsername(), HttpStatus.OK);
-  }
+        Usuario usuarioSalvo  = usuarioService.salvarUsuario(usuario);
+        return new ResponseEntity<>("Novo usuário criado "+ usuarioSalvo.getUsername(), HttpStatus.OK);
+    }
 
-  @GetMapping
-  public ResponseEntity<List<Usuario>> obtemUsuarios() {
-    return new ResponseEntity<>(usuarioService.obtemUsuarios(), HttpStatus.OK);
-  }
+    @GetMapping
+    public ResponseEntity<List<Usuario>> obtemUsuarios(){
+        return new ResponseEntity<>(usuarioService.obtemUsuarios(), HttpStatus.OK);
+    }
 
-  @DeleteMapping
-  public void excluirUsuario(@RequestBody Usuario usuario) {
-    usuarioService.excluirUsuario(usuario);
-  }
+    @DeleteMapping
+    public void excluirUsuario(@RequestBody Usuario usuario){
+        usuarioService.excluirUsuario(usuario);
+    }
 }

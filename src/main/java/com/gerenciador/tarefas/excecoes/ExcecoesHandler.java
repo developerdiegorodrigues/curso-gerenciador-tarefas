@@ -13,49 +13,48 @@ import java.util.Map;
 @ControllerAdvice
 public class ExcecoesHandler {
 
-  @ExceptionHandler(NaoPermitirExcluirException.class)
-  public ResponseEntity<ErrorResponse> naoPermitirExcluirExceptionHandler(NaoPermitirExcluirException ex) {
-    Map<String, String> response = new HashMap<>();
-    response.put("codigo", ErrosEnum.NAO_PERMITIDO_EXCLUIR.toString());
-    response.put("mensagem", "Não é permitido excluir uma tarefa com o status diferente de CRIADA");
+    @ExceptionHandler(NaoPermitirExcluirException.class)
+    public ResponseEntity<ErrorResponse> naoPermitirExcluirExceptionHandler(NaoPermitirExcluirException ex) {
 
-    ErrorResponse errorResponse = ErrorResponse
-        .builder()
-        .status(HttpStatus.UNPROCESSABLE_ENTITY.toString())
-        .errors(Collections.singletonList(response))
-        .build();
+        Map<String, String> response = new HashMap<>();
+        response.put("codigo", ErrosEnum.NAO_PERMITIDO_EXCLUIR.toString());
+        response.put("mensagem", "Não é permitido excluir uma tarefa com o status diferente de CRIADA");
 
-    return new ResponseEntity<>(errorResponse, HttpStatus.UNPROCESSABLE_ENTITY);
-  }
+        ErrorResponse errorResponse =  ErrorResponse.builder()
+            .status(HttpStatus.UNPROCESSABLE_ENTITY.toString())
+            .errors(Collections.singletonList(response))
+            .build();
 
-  @ExceptionHandler(NaoPermitidoAlterarStatusException.class)
-  public ResponseEntity<ErrorResponse> naoPermitidoAlterarStatusExceptionHandler(
-      NaoPermitidoAlterarStatusException ex) {
-    Map<String, String> response = new HashMap<>();
-    response.put("codigo", ErrosEnum.NAO_PERMITIDO_MUDAR_STATUS.toString());
-    response.put("mensagem", ex.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.UNPROCESSABLE_ENTITY);
+    }
 
-    ErrorResponse errorResponse = ErrorResponse
-        .builder()
-        .status(HttpStatus.UNPROCESSABLE_ENTITY.toString())
-        .errors(Collections.singletonList(response))
-        .build();
+    @ExceptionHandler(NaoPermitoAlterarStatusException.class)
+    public ResponseEntity<ErrorResponse> naoPermitoAlterarStatusExceptionHandler(NaoPermitoAlterarStatusException ex) {
 
-    return new ResponseEntity<>(errorResponse, HttpStatus.UNPROCESSABLE_ENTITY);
-  }
+        Map<String, String> response = new HashMap<>();
+        response.put("codigo", ErrosEnum.NAO_PERMITIDO_EXCLUIR.toString());
+        response.put("mensagem", ex.getMessage());
 
-  @ExceptionHandler(TarefaExistenteException.class)
-  public ResponseEntity<ErrorResponse> tarefaExistenteExceptionHandler(TarefaExistenteException ex) {
-    Map<String, String> response = new HashMap<>();
-    response.put("codigo", ErrosEnum.NAO_PERMITIDO_EXCLUIR.toString());
-    response.put("mensagem", ex.getMessage());
+        ErrorResponse errorResponse =  ErrorResponse.builder()
+            .status(HttpStatus.UNPROCESSABLE_ENTITY.toString())
+            .errors(Collections.singletonList(response))
+            .build();
 
-    ErrorResponse errorResponse = ErrorResponse
-        .builder()
-        .status(HttpStatus.UNPROCESSABLE_ENTITY.toString())
-        .errors(Collections.singletonList(response))
-        .build();
+        return new ResponseEntity<>(errorResponse, HttpStatus.UNPROCESSABLE_ENTITY);
+    }
 
-    return new ResponseEntity<>(errorResponse, HttpStatus.UNPROCESSABLE_ENTITY);
-  }
+    @ExceptionHandler(TarefaExistenteException.class)
+    public ResponseEntity<ErrorResponse> tarefaExistenteExceptionHandler(TarefaExistenteException ex) {
+
+        Map<String, String> response = new HashMap<>();
+        response.put("codigo", ErrosEnum.NAO_PERMITIDO_EXCLUIR.toString());
+        response.put("mensagem", ex.getMessage());
+
+        ErrorResponse errorResponse =  ErrorResponse.builder()
+            .status(HttpStatus.UNPROCESSABLE_ENTITY.toString())
+            .errors(Collections.singletonList(response))
+            .build();
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.UNPROCESSABLE_ENTITY);
+    }
 }

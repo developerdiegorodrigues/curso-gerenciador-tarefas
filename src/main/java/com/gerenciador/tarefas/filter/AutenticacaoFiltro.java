@@ -13,14 +13,17 @@ import java.io.IOException;
 
 public class AutenticacaoFiltro extends GenericFilterBean {
 
-  @Override
-  public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
-      throws IOException, ServletException {
+    @Override
+    public void doFilter(
+        ServletRequest servletRequest,
+        ServletResponse servletResponse,
+        FilterChain filterChain
+    ) throws IOException, ServletException {
 
-    Authentication authentication = AutenticacaoService.obterAutenticacao((HttpServletRequest) servletRequest);
+        Authentication authentication = AutenticacaoService.obterAutenticacao((HttpServletRequest) servletRequest);
 
-    SecurityContextHolder.getContext().setAuthentication(authentication);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-    filterChain.doFilter(servletRequest, servletResponse);
-  }
+        filterChain.doFilter(servletRequest, servletResponse);
+    }
 }

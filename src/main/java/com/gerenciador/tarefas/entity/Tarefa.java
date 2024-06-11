@@ -16,57 +16,66 @@ import java.time.LocalTime;
 @Builder
 public class Tarefa implements Serializable {
 
-  private static final long serialVersionUID = 1L;
+   private static final long serialVersionUID = 1L;
 
-  public Tarefa() {
-  }
+   public Tarefa() {
+   }
 
-  public Tarefa(Long id, String titulo, String descricao, TarefaStatusEnum status, Usuario responsavel, Usuario criador,
-      int quantidadeHorasEstimadas, Integer quantidadeHorasRealizada, LocalTime dataCadastro,
-      LocalTime dataAtualizacao) {
-    this.id = id;
-    this.titulo = titulo;
-    this.descricao = descricao;
-    this.status = status;
-    this.responsavel = responsavel;
-    this.criador = criador;
-    this.quantidadeHorasEstimadas = quantidadeHorasEstimadas;
-    this.quantidadeHorasRealizada = quantidadeHorasRealizada;
-    this.dataCadastro = dataCadastro;
-    this.dataAtualizacao = dataAtualizacao;
-  }
+   public Tarefa(
+      Long id,
+      String titulo,
+      String descricao,
+      TarefaStatusEnum status,
+      Usuario responsavel,
+      Usuario criador,
+      int quantidadeHorasEstimadas,
+      Integer quantidadeHorasRealizada,
+      LocalTime dataCadasto,
+      LocalTime dataAtualizacao
+   ) {
+      this.id = id;
+      this.titulo = titulo;
+      this.descricao = descricao;
+      this.status = status;
+      this.responsavel = responsavel;
+      this.criador = criador;
+      this.quantidadeHorasEstimadas = quantidadeHorasEstimadas;
+      this.quantidadeHorasRealizada = quantidadeHorasRealizada;
+      this.dataCadasto = dataCadasto;
+      this.dataAtualizacao = dataAtualizacao;
+   }
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
-  private Long id;
+   @Id
+   @GeneratedValue(strategy = GenerationType.SEQUENCE)
+   private Long id;
 
-  @Column(nullable = false)
-  private String titulo;
+   @Column(nullable = false)
+   private String titulo;
 
-  @Column(nullable = false)
-  private String descricao;
+   @Column(nullable = false)
+   private String descricao;
 
-  @Column(nullable = false)
-  @Enumerated(EnumType.STRING)
-  private TarefaStatusEnum status;
+   @Column(nullable = false)
+   @Enumerated(EnumType.STRING)
+   private TarefaStatusEnum status;
 
-  @Column
-  private Usuario responsavel;
+   @Column
+   private Usuario responsavel;
 
-  @Column(nullable = false)
-  private Usuario criador;
+   @Column(nullable = false)
+   private Usuario criador;
 
-  @Column(nullable = false)
-  private int quantidadeHorasEstimadas;
+   @Column(nullable = false)
+   private int quantidadeHorasEstimadas;
 
-  @Column
-  private Integer quantidadeHorasRealizada;
+   @Column
+   private Integer quantidadeHorasRealizada;
 
-  @Column
-  @CreationTimestamp
-  private LocalTime dataCadastro;
+   @Column
+   @CreationTimestamp
+   private LocalTime dataCadasto;
 
-  @Column
-  @UpdateTimestamp
-  private LocalTime dataAtualizacao;
+   @Column
+   @UpdateTimestamp
+   private LocalTime dataAtualizacao;
 }

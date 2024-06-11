@@ -8,40 +8,39 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
 import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootApplication
 public class GerenciadorTarefasApplication implements CommandLineRunner {
 
-  @Autowired
-  private UsuarioService usuarioService;
+	@Autowired
+	private UsuarioService usuarioService;
 
-  public static void main(String[] args) {
-    SpringApplication.run(GerenciadorTarefasApplication.class, args);
-  }
+	public static void main(String[] args) {
+		SpringApplication.run(GerenciadorTarefasApplication.class, args);
+	}
 
-  @Override
-  public void run(String... args) throws Exception {
+	@Override
+	public void run(String... args) throws Exception {
 
-    Usuario usuario = new Usuario();
-    usuario.setUsername("admin");
-    usuario.setPassword("12345678");
+		Usuario usuario = new Usuario();
+		usuario.setUsername("admin");
+		usuario.setPassword("12345678");
 
-    List<Role> roles = new ArrayList<>();
+		List<Role> roles = new ArrayList<>();
 
-    Role roleAdmin = new Role();
-    roleAdmin.setNome(PermissaoEnum.ADMINISTRADOR);
+		Role roleAdmin = new Role();
+		roleAdmin.setNome(PermissaoEnum.ADMINISTRADOR);
 
-    Role roleUsuario = new Role();
-    roleUsuario.setNome(PermissaoEnum.USUARIO);
+		Role roleUsuario = new Role();
+		roleUsuario.setNome(PermissaoEnum.USUARIO);
 
-    roles.add(roleAdmin);
-    roles.add(roleUsuario);
+		roles.add(roleAdmin);
+		roles.add(roleUsuario);
 
-    usuario.setRoles(roles);
+		usuario.setRoles(roles);
 
-    usuarioService.salvarUsuario(usuario);
-  }
+		usuarioService.salvarUsuario(usuario);
+	}
 }

@@ -1,95 +1,68 @@
 
-# Estrutura dos arquivos
+# Estrutura pasta principal
 
-|   pom.xml *Arquivo de configuração das dependencias Mavem*
+|   GerenciadorTarefasApplication.java            *Class* *SpringBootApplication* _Main_
 |
-\---src
-    \---main
-        +---java
-        |   \---com
-        |       \---gerenciador
-        |           \---tarefas
-        |               |   GerenciadorTarefasApplication.java *Arquivo starter da aplicação*
-        |               |
-        |               +---controller *Controladores - Rotas*
-        |               |       GerenciadorTarefasController.java | Controlador para as rotas de gerencimanto de tarefas
-        |               |       TesteApiController.java | Controlador para as rotas de teste
-        |               |       UsuarioController.java | Controlador para as rotas de usuário
-        |               |
-        |               +---service *Serviços*
-        |               |       GerenciadorTarefasService.java | Serviço de gerenciamento de tarefas
-        |               |       UsuarioAutenticadoService.java | AUTH - Serviço para autenticação do usuário
-        |               |       AutenticacaoService.java | AUTH - Serviço de autenticação
-        |               |       UsuarioService.java | Serviço pra controlador do usuário
-        |               |
-        |               +---repository *JPA Repository - Interfaces*
-        |               |       GerenciadorTarefasRepository.java | Interface do gerenciamento de tarefas
-        |               |       IRoleRepository.java | Interface das regras
-        |               |       IUsuarioRepository.java | Interface dos usuários
-        |               |
-        |               +---entity *Entidades*
-        |               |       Role.java | Armazena informações relativas as permissões (Banco de dados)
-        |               |       Tarefa.java | Armazena dados relativos as tarefas (Banco de dados)
-        |               |       Usuario.java | Armazena dados dos usuários (Banco de dados)
-        |               |       UsuarioAutenticado.java | Usuário e senha
-        |               |
-        |               +---request *DTO - Request*
-        |               |       AtualizarTarefaRequest.java
-        |               |       CadastrarTarefaRequest.java
-        |               |
-        |               +---response *DTO - Response*
-        |               |       AtualizarTarefaResponse.java
-        |               |       CadastrarTarefaResponse.java
-        |               |       ErrorResponse.java
-        |               |       ObterTarefasPaginadaResponse.java
-        |               |       ObterTarefasResponse.java
-        |               |
-        |               +---config
-        |               |       SecurityConfiguration.java | AUTH - Configuração de segurança de acesso as rotas
-        |               |
-        |               +---filter
-        |               |       AutenticacaoFiltro.java | AUTH - Filtro para a autenticação
-        |               |       LoginFiltro.java | AUTH - Filtro para o login
-        |               |
-        |               +---permissoes
-        |               |       PermissaoEnum.java | AUTH - Enum - Enumerações de acesso
-        |               |
-        |               +---status
-        |               |       TarefaStatusEnum.java | Enum - Enumerações das tarefas
-        |               |
-        |               +---excecoes
-        |               |       ErrosEnum.java | Enum - Enumerações de erros
-        |               |       ExcecoesHandler.java | Manipulador de exceções
-        |               |       NaoPermitidoAlterarStatusException.java | Exceção específica
-        |               |       NaoPermitirExcluirException.java | Exceção específica
-        |               |       TarefaExistenteException.java | Exceção específica
-        |               |
-        |               \---validation
-        |                       ValidacaoCamposHandler.java | Validação de campos
-        |
-        \---resources
-                application.properties *Arquivo de customização das configurações do Spring Boot*
-                import.sql *Arquivo SQL executado na inicialização da aplicação*
-                messages.properties *Arquivo de mensagens com orientações para validação*
++---config *Configurações de acesso*
+|       SecurityConfiguration.java                *Class* *Configuration* _Routes security_
+|
++---controller *Controladores*
+|       GerenciadorTarefasController.java         *Class* *RestController*
+|       TesteApiController.java                   *Class* *RestController*
+|       UsuarioController.java                    *Class* *RestController*
+|
++---entity *Entidades*
+|       Role.java                                 *Class* *Entity* _Table_
+|       Tarefa.java                               *Class* *Entity* _Table_
+|       Usuario.java                              *Class* *Entity* _Table_
+|       UsuarioAutenticado.java                   *Class* *Entity*
+|
++---excecoes *Tratativa de exceções*
+|       ErrosEnum.java                            *Enum*
+|       ExcecoesHandler.java                      *Class* *ControllerAdvice* _Controlador de erros_
+|       NaoPermitirExcluirException.java          *Class* 
+|       NaoPermitoAlterarStatusException.java     *Class*
+|       TarefaExistenteException.java             *Class*
+|
++---filter
+|       AutenticacaoFiltro.java                   *Class*
+|       LoginFiltro.java                          *Class*
+|
++---permissoes
+|       PermissaoEnum.java                        *Enum*
+|
++---repository *Repositório*
+|       GerenciadorTarefasRepository.java         *Interface* *Repository*
+|       IRoleRepository.java                      *Interface* *Repository*
+|       IUsuarioRepository.java                   *Interface* *Repository*
+|
++---request *DTO Requisição*
+|       AtualizarTarefaRequest.java               *Class* _DTO Request_
+|       CadastrarTarefaRequest.java               *Class* _DTO Request_
+|
++---response *DTO Resposta*
+|       AtualizarTarefaResponse.java              *Class* _DTO Response_
+|       CadastrarTarefaResponse.java              *Class* _DTO Response_
+|       ErrorResponse.java                        *Class* _DTO Response_
+|       ObterTarefasPaginadaResponse.java         *Class* _DTO Response_
+|       ObterTarefasResponse.java                 *Class* _DTO Response_
+|
++---service *Service*
+|       AutenticacaoService.java                  *Class* _Service_
+|       GerenciadorTarefasService.java            *Service* _Service_
+|       UsuarioAutenticadoService.java            *Service* _Service_
+|       UsuarioService.java                       *Service* _Service_
+|
++---status
+|       TarefaStatusEnum.java                     *Enum*
+|
+\---validation
+        ValidacaoCamposHandler.java               *ControllerAdvice*
 
-# Anotações gerais
+# Adicionais
 
-Amazon SNS - Serviço de notificação da Amazon
-Verbos HTTP - Get, Post, Put, Delete
-Prefixos códigos HTTP
-  1xx Informativo
-  2xx Confirmação
-  3xx Redirecionamento
-  4xx Erro do cliente
-  5xx Erro do servidor
-HTTP Status Codes comuns
-  200 Ok
-  201 Created
-  301 Moved Permanently
-  400 Bad Request
-  401 Unauthorized
-  403 Forbidden
-  404 Not Found
-  408 TimeOut Error
-  500 Internal Server Error
-  503 Service Unavailable
+pom.xml *Arquivo de configuração das dependencias Mavem*
+application.properties *Arquivo de customização das configurações do Spring Boot*
+import.sql *Arquivo SQL executado na inicialização da aplicação*
+messages.properties *Arquivo de mensagens com orientações para validação*
+

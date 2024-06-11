@@ -1,5 +1,6 @@
 package com.gerenciador.tarefas.service;
 
+
 import com.gerenciador.tarefas.entity.Usuario;
 import com.gerenciador.tarefas.repository.IRoleRepository;
 import com.gerenciador.tarefas.repository.IUsuarioRepository;
@@ -14,46 +15,46 @@ import java.util.Optional;
 @Transactional
 public class UsuarioService {
 
-  @Autowired
-  private IUsuarioRepository iUsuarioRepository;
+    @Autowired
+    private IUsuarioRepository iUsuarioRepository;
 
-  @Autowired
-  private IRoleRepository iRoleRepository;
+    @Autowired
+    private IRoleRepository iRoleRepository;
 
-  @Autowired
-  private PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-  public Usuario salvarUsuario(Usuario usuario) {
+    public Usuario salvarUsuario(Usuario usuario) {
 
-    usuario.setRoles(usuario.getRoles()
-        .stream()
-        .map(role -> iRoleRepository.findByNome(role.getNome()))
-        .toList());
+        usuario.setRoles(usuario.getRoles()
+            .stream()
+            .map(role -> iRoleRepository.findByNome(role.getNome()))
+            .toList());
 
-    usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
-    return this.iUsuarioRepository.save(usuario);
-  }
+        usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
+        return this.iUsuarioRepository.save(usuario);
+    }
 
-  public Usuario atualizarUsuario(Usuario usuario) {
+    public Usuario atualizarUsuario(Usuario usuario){
 
-    usuario.setRoles(usuario.getRoles()
-        .stream()
-        .map(role -> iRoleRepository.findByNome(role.getNome()))
-        .toList());
+        usuario.setRoles(usuario.getRoles()
+            .stream()
+            .map(role -> iRoleRepository.findByNome(role.getNome()))
+            .toList());
 
-    usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
-    return this.iUsuarioRepository.save(usuario);
-  }
+        usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
+        return this.iUsuarioRepository.save(usuario);
+    }
 
-  public Optional<Usuario> obterUsuarioId(Long usuarioId) {
-    return this.iUsuarioRepository.findById(usuarioId);
-  }
+    public Optional<Usuario> obterUsuarioId(Long ususarioId) {
+        return this.iUsuarioRepository.findById(ususarioId);
+    }
 
-  public void excluirUsuario(Usuario usuario) {
-    this.iUsuarioRepository.deleteById(usuario.getId());
-  }
+    public void excluirUsuario(Usuario usuario){
+        this.iUsuarioRepository.deleteById(usuario.getId());
+    }
 
-  public List<Usuario> obtemUsuarios() {
-    return this.iUsuarioRepository.findAll();
-  }
+    public List<Usuario> obtemUsuarios(){
+        return this.iUsuarioRepository.findAll();
+    }
 }

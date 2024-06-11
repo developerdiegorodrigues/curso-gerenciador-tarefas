@@ -9,12 +9,12 @@ import lombok.Setter;
 @Builder
 public class AtualizarTarefaResponse {
 
-  private Long id;
-  private String titulo;
-  private String descricao;
-  private String criador;
-  private int quantidadeHorasEstimadas;
-  private String status;
-  private String responsavel;
-  private Integer quantidadeHorasRealizada;
+    private Long id;
+    private String titulo;
+    private String descricao;
+    private String criador;
+    private int quantidadeHorasEstimadas;
+    private String status;
+    private String responsavel;
+    private Integer quantidadeHorasRealizada;
 }

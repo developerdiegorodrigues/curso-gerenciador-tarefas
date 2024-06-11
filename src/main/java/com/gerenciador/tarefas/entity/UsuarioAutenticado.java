@@ -7,7 +7,6 @@ import lombok.Setter;
 @Setter
 public class UsuarioAutenticado {
 
-  private String username;
-  private String password;
-
+    private String username;
+    private String password;
 }

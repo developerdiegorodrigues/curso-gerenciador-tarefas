@@ -12,6 +12,6 @@ import java.util.Map;
 @Builder
 public class ErrorResponse {
 
-  private String status; // 400 - BAD REQUEST
-  private List<Map<String, String>> errors; // campo, descricao
+    private String status; // 400 - BAD REQUEST
+    private List<Map<String, String>> errors; // campo // descricao
 }

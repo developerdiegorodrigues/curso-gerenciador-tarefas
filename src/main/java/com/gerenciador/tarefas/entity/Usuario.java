@@ -8,34 +8,32 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.util.List;
 
-@Entity // Define a classe como uma entidade de banco de dados
-@Table(name = "usuarios") // Nome da tabela
+@Entity
+@Table(name = "usuarios")
 @Data
 @Getter
 @Setter
 public class Usuario implements Serializable {
 
-  private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long id;
 
-  @Column(unique = true, length = 50)
-  private String username;
+    @Column(unique = true, length = 50)
+    private String username;
 
-  @Column(length = 150)
-  private String password;
+    @Column(length = 150)
+    private String password;
 
-  @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-  @JoinTable(
-    name = "usuarios_roles",
-    joinColumns = @JoinColumn(name = "usuario_id"),
-    inverseJoinColumns = @JoinColumn(name = "role_id"),
-    uniqueConstraints = @UniqueConstraint(columnNames = {
-      "usuario_id",
-      "role_id"
-    })
-  )
-  private List<Role> roles;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+        name = "usuarios_roles",
+        joinColumns = @JoinColumn(name = "usuario_id"),
+        inverseJoinColumns = @JoinColumn(name = "role_id"),
+        uniqueConstraints = @UniqueConstraint(columnNames = {"usuario_id" , "role_id"})
+    )
+    private List<Role> roles;
+
 }

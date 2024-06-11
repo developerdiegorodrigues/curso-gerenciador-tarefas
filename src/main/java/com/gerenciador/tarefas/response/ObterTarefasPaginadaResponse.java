@@ -3,7 +3,6 @@ package com.gerenciador.tarefas.response;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.util.List;
 
 @Getter
@@ -11,8 +10,8 @@ import java.util.List;
 @Builder
 public class ObterTarefasPaginadaResponse {
 
-  private int paginaAtual;
-  private Long totalItens;
-  private int totalPaginas;
-  private List<ObterTarefasResponse> tarefas;
+    private int paginaAtual;
+    private Long totalItens;
+    private int totalPaginas;
+    private List<ObterTarefasResponse> tarefas;
 }

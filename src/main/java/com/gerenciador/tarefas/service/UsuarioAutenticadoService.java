@@ -13,23 +13,23 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@Transactional // Finaliza a conexão com o banco de dados somente após a finalização do método
+@Transactional
 public class UsuarioAutenticadoService implements UserDetailsService {
 
-  @Autowired
-  private IUsuarioRepository iUsuarioRepository;
+    @Autowired
+    private IUsuarioRepository iUsuarioRepository;
 
-  @Override
-  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-    Usuario usuario = iUsuarioRepository.findByUsername(username)
-        .orElseThrow(() -> new UsernameNotFoundException("Usuário " + username + " não foi encontrado"));
+        Usuario usuario = iUsuarioRepository.findByUsername(username)
+            .orElseThrow(() -> new UsernameNotFoundException("Usuário " + username + " não foi encontrado"));
 
-    List<SimpleGrantedAuthority> roles = usuario.getRoles()
-        .stream()
-        .map(role -> new SimpleGrantedAuthority(role.getNome().toString()))
-        .toList();
+        List<SimpleGrantedAuthority> roles = usuario.getRoles()
+            .stream()
+            .map(role -> new SimpleGrantedAuthority(role.getNome().toString()))
+            .toList();
 
-    return new User(usuario.getUsername(), usuario.getPassword(), roles);
-  }
+        return new User(usuario.getUsername(), usuario.getPassword(), roles);
+    }
 }

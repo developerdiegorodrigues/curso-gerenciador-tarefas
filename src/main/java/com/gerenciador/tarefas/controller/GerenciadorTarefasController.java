@@ -21,94 +21,94 @@ import java.util.List;
 @RequestMapping("/gerenciador-tarefas")
 public class GerenciadorTarefasController {
 
-  @Autowired
-  private GerenciadorTarefasService gerenciadorTarefasService;
+    @Autowired
+    private GerenciadorTarefasService gerenciadorTarefasService;
 
-  @PostMapping
-  public ResponseEntity<CadastrarTarefaResponse> salvarTarefa(@Valid @RequestBody CadastrarTarefaRequest request) {
+    @PostMapping
+    public ResponseEntity<CadastrarTarefaResponse> salvarTarefa(@Valid @RequestBody CadastrarTarefaRequest request) {
 
-    Tarefa tarefaSalva = gerenciadorTarefasService.salvarTarefa(request);
-    CadastrarTarefaResponse response = CadastrarTarefaResponse
-        .builder()
-        .id(tarefaSalva.getId())
-        .titulo(tarefaSalva.getTitulo())
-        .descricao(tarefaSalva.getDescricao())
-        .criador(tarefaSalva.getCriador().getUsername())
-        .build();
+        Tarefa tarefaSalva = gerenciadorTarefasService.salvarTarefa(request);
 
-    return new ResponseEntity<>(response, HttpStatus.CREATED);
-  }
+        CadastrarTarefaResponse response = CadastrarTarefaResponse
+            .builder()
+            .id(tarefaSalva.getId())
+            .titulo(tarefaSalva.getTitulo())
+            .descricao(tarefaSalva.getDescricao())
+            .criador(tarefaSalva.getCriador().getUsername())
+            .build();
 
-  @GetMapping
-  public ResponseEntity<ObterTarefasPaginadaResponse> obterTarefas(
-      @RequestParam(required = false) String titulo,
-      @RequestParam(defaultValue = "0") int page,
-      @RequestParam(defaultValue = "3") int size) {
-
-    Page<Tarefa> tarefasPaginada = null;
-
-    if (titulo == null) {
-      tarefasPaginada = this.gerenciadorTarefasService.obtemTodasTarefas(PageRequest.of(page, size));
-    } else {
-      tarefasPaginada = this.gerenciadorTarefasService.obtemTarefasPorTitulo(titulo, PageRequest.of(page, size));
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    List<ObterTarefasResponse> tarefas = tarefasPaginada
-        .getContent()
-        .stream()
-        .map(tarefa -> {
-          return ObterTarefasResponse
-              .builder()
-              .id(tarefa.getId())
-              .titulo(tarefa.getTitulo())
-              .descricao(tarefa.getDescricao())
-              .responsavel(tarefa.getResponsavel() != null ? tarefa.getResponsavel().getUsername() : "NAO_ATRIBUIDA")
-              .criador(tarefa.getCriador().getUsername())
-              .status(tarefa.getStatus())
-              .quantidadeHorasEstimadas(tarefa.getQuantidadeHorasEstimadas())
-              .quantidadeHorasRealizada(tarefa.getQuantidadeHorasRealizada())
-              .dataCadastro(tarefa.getDataCadastro())
-              .dataAtualizacao(tarefa.getDataAtualizacao())
-              .build();
-        })
-        .toList();
+    @GetMapping
+    public ResponseEntity<ObterTarefasPaginadaResponse> obterTarefas(
+        @RequestParam(required = false) String titulo,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "3") int size
+    ) {
 
-    ObterTarefasPaginadaResponse response = ObterTarefasPaginadaResponse
-        .builder()
-        .paginaAtual(tarefasPaginada.getNumber())
-        .totalPaginas(tarefasPaginada.getTotalPages())
-        .totalItens(tarefasPaginada.getTotalElements())
-        .tarefas(tarefas)
-        .build();
+        Page<Tarefa> tarefasPaginada = null;
 
-    return new ResponseEntity<>(response, HttpStatus.OK);
-  }
+        if (titulo == null) {
+            tarefasPaginada = this.gerenciadorTarefasService.obtemTodasTarefas(PageRequest.of(page, size));
+        } else {
+            tarefasPaginada = this.gerenciadorTarefasService.obtemTarefasPorTitulo(titulo, PageRequest.of(page, size));
+        }
 
-  @PutMapping(value = "/{id}")
-  public ResponseEntity<AtualizarTarefaResponse> atualizarTarefa(@PathVariable Long id,
-      @Valid @RequestBody AtualizarTarefaRequest request) {
+        List<ObterTarefasResponse> tarefas = tarefasPaginada.getContent()
+            .stream()
+            .map(tarefa -> {
+                return ObterTarefasResponse.builder()
+                    .id(tarefa.getId())
+                    .titulo(tarefa.getTitulo())
+                    .descricao(tarefa.getDescricao())
+                    .responsavel(tarefa.getResponsavel() != null ? tarefa.getResponsavel().getUsername() : "NAO_ATRIBUIDA")
+                    .criador(tarefa.getCriador().getUsername())
+                    .status(tarefa.getStatus())
+                    .quantidadeHorasEstimadas(tarefa.getQuantidadeHorasEstimadas())
+                    .quantidadeHorasRealizada(tarefa.getQuantidadeHorasRealizada())
+                    .dataCadasto(tarefa.getDataCadasto())
+                    .dataAtualizacao(tarefa.getDataAtualizacao())
+                    .build();
+            })
+            .toList();
 
-    Tarefa tarefaAtualizada = gerenciadorTarefasService.atualizarTarefa(id, request);
+        ObterTarefasPaginadaResponse response = ObterTarefasPaginadaResponse.builder()
+            .paginaAtual(tarefasPaginada.getNumber())
+            .totalPaginas(tarefasPaginada.getTotalPages())
+            .totalItens(tarefasPaginada.getTotalElements())
+            .tarefas(tarefas)
+            .build();
 
-    AtualizarTarefaResponse response = AtualizarTarefaResponse
-        .builder()
-        .id(tarefaAtualizada.getId())
-        .titulo(tarefaAtualizada.getTitulo())
-        .descricao(tarefaAtualizada.getDescricao())
-        .criador(tarefaAtualizada.getCriador().getUsername())
-        .quantidadeHorasEstimadas(tarefaAtualizada.getQuantidadeHorasEstimadas())
-        .status(tarefaAtualizada.getStatus().toString())
-        .responsavel(tarefaAtualizada.getResponsavel().getUsername())
-        .quantidadeHorasRealizada(
-            tarefaAtualizada.getQuantidadeHorasRealizada() != null ? tarefaAtualizada.getQuantidadeHorasRealizada()
-                : null)
-        .build();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
-    return new ResponseEntity<>(response, HttpStatus.OK);
-  }
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<AtualizarTarefaResponse> atualizarTarefa(
+        @PathVariable Long id,
+        @Valid
+        @RequestBody AtualizarTarefaRequest request
+    ) {
 
-  @DeleteMapping(value = "/{id}")
-  public void excluirTarefa(@PathVariable Long id) {
-    gerenciadorTarefasService.excluirTarefa(id);
-  }
+        Tarefa tarefaAtualizada = gerenciadorTarefasService.atualizarTarefa(id, request);
+
+        AtualizarTarefaResponse response = AtualizarTarefaResponse.builder()
+            .id(tarefaAtualizada.getId())
+            .titulo(tarefaAtualizada.getTitulo())
+            .descricao(tarefaAtualizada.getDescricao())
+            .criador(tarefaAtualizada.getCriador().getUsername())
+            .quantidadeHorasEstimadas(tarefaAtualizada.getQuantidadeHorasEstimadas())
+            .status(tarefaAtualizada.getStatus().toString())
+            .responsavel(tarefaAtualizada.getResponsavel().getUsername())
+            .quantidadeHorasRealizada(tarefaAtualizada.getQuantidadeHorasRealizada() != null ? tarefaAtualizada.getQuantidadeHorasRealizada() : null)
+            .build();
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public void excluirTarefa(@PathVariable Long id) {
+
+        gerenciadorTarefasService.excluirTarefa(id);
+    }
 }

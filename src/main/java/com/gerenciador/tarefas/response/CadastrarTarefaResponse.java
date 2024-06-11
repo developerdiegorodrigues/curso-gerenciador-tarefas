@@ -9,8 +9,8 @@ import lombok.Setter;
 @Builder
 public class CadastrarTarefaResponse {
 
-  private Long id;
-  private String titulo;
-  private String descricao;
-  private String criador;
+    private Long id;
+    private String titulo;
+    private String descricao;
+    private String criador;
 }
